@@ -37,6 +37,6 @@ git pull upstream main --allow-unrelated-histories
 ### Запушить изменения
 ```
 git add .
-git commit -m "COMMIT NAME"
+git commit -m "COMMIT MESSAGE"
 git push origin main
 ```
