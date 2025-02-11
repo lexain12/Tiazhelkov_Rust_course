@@ -12,7 +12,7 @@ cd Rust_course_2025
 3) Устанавливаем связь + пушим
 ```
 git remote remove origin
-git remote add origin https://github.com/ЛОГИН/Rust_course_homework.git
+git remote add origin https://github.com/ЛОГИН/ФАМИЛИЯ_Rust_Rust_course_2025.git
 git push -u origin main
 ```
 
