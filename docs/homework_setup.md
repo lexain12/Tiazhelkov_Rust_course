@@ -21,7 +21,7 @@ git push -u origin main
 git remote add upstream https://github.com/DBarinovv/Rust_course_2025.git
 ```
 
-5) Даём мне, **DBarinovv**, доступ как коллаборатору
+5) Даём мне, **DBarinovv**, и ассистенту **ek-krupnik** доступ как коллаборатору
 
 ### Получить изменения
 ```
