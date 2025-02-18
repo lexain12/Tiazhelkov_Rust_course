@@ -1,6 +1,5 @@
 #![forbid(unsafe_code)]
 
 pub fn add(x: i32, y: i32) -> i32 {
-    // TODO: your code goes here.
-    unimplemented!()
+    x.saturating_add(y)
 }
