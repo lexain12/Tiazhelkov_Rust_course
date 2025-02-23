@@ -5,13 +5,13 @@ use std::{
 };
 
 use pretty_assertions::assert_eq;
-use rand::{rngs::StdRng, seq::SliceRandom, Rng, SeedableRng};
+use rand::{rngs::StdRng, seq::{IndexedRandom, SliceRandom}, Rng, SeedableRng};
 use tempfile::{NamedTempFile, TempPath};
 
 const BINARY_PATH: &str = if cfg!(debug_assertions) {
-    "../../../target/debug/comm"
+    "target/debug/comm"
 } else {
-    "../../../target/release/comm"
+    "target/release/comm"
 };
 
 fn run_comm(first: &[&str], second: &[&str]) -> Vec<String> {
