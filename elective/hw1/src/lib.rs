@@ -80,8 +80,6 @@ impl Task {
 
 #[cfg(test)]
 mod tests {
-    use std::cmp::Ordering;
-
     use super::*;
 
     #[test]
@@ -90,8 +88,8 @@ mod tests {
         let description = String::from("My new beatiful task");
         let task = Task::new(name.clone(), description.clone());
         assert_eq!(task.get_status(), Status::Unstaged);
-        assert_eq!(task.get_name().cmp(&name), Ordering::Equal);
-        assert_eq!(task.get_description().cmp(&description), Ordering::Equal);
+        assert_eq!(task.get_name(), &name);
+        assert_eq!(task.get_description(), &description);
     }
 
     #[test]
