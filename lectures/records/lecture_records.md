@@ -1,7 +1,10 @@
-# Lecture-00
-- [Record](https://plvideo.ru/watch?v=-NKHujp4--hl)
-- [Presentation](/lectures/presentations/lecture_00_2025.pdf)
+# Full playlist
+- [Lectures](https://plvideo.ru/playlist?list=9NQF4eGp8fR2)
 
-# Lecture-01
-- [Record](https://plvideo.ru/watch?v=GXqBqK8w6MwK)
-- [Presentation](/lectures/presentations/lecture_01_2025.pdf)
+# Presentations
+- [Presentation](/lectures/presentations)
+
+
+---
+### Lecture-02 part 2
+- [Record part2](https://drive.google.com/file/d/1_E7gJEaofVBbM_Zy3f3CMAZT4aPoI5r1/view?usp=sharing)
