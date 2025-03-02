@@ -22,15 +22,15 @@ impl Error for BadTransition {}
 #[derive(Debug)]
 pub struct Task {
     name: String,
-    description: String,
+    description: Option<String>,
     status: Status,
 }
 
 impl Task {
-    pub fn new(name: String, description: String) -> Self {
+    pub fn new(name: String) -> Self {
         Self {
             name,
-            description,
+            description: None,
             status: Status::Unstaged,
         }
     }
@@ -39,12 +39,16 @@ impl Task {
         &self.name
     }
 
-    pub fn get_description(&self) -> &str {
-        &self.description
+    pub fn get_description(&self) -> Option<&String> {
+        self.description.as_ref()
     }
 
     pub fn get_status(&self) -> Status {
         self.status
+    }
+
+    pub fn set_description(&mut self, description: String) {
+        self.description = Some(description)
     }
 
     pub fn stage(&mut self) -> Result<(), BadTransition> {
@@ -86,17 +90,19 @@ mod tests {
     fn new() {
         let name = String::from("Task");
         let description = String::from("My new beatiful task");
-        let task = Task::new(name.clone(), description.clone());
+        let mut task = Task::new(name.clone());
+        task.set_description(description.clone());
         assert_eq!(task.get_status(), Status::Unstaged);
         assert_eq!(task.get_name(), &name);
-        assert_eq!(task.get_description(), &description);
+        assert_eq!(task.get_description(), Some(&description));
     }
 
     #[test]
     fn possible_transition() -> Result<(), BadTransition> {
         let name = String::from("Task");
         let description = String::from("My new beatiful task");
-        let mut task = Task::new(name.clone(), description.clone());
+        let mut task = Task::new(name.clone());
+        task.set_description(description.clone());
 
         task.stage()?;
         assert_eq!(task.get_status(), Status::Pending);
@@ -111,7 +117,8 @@ mod tests {
     fn impossible_transitions() -> Result<(), BadTransition> {
         let name = String::from("Task");
         let description = String::from("My new beatiful task");
-        let mut task = Task::new(name.clone(), description.clone());
+        let mut task = Task::new(name.clone());
+        task.set_description(description.clone());
 
         task.execute().expect_err("");
         task.complete().expect_err("");
