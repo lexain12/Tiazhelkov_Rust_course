@@ -15,24 +15,15 @@ fn get_grid(grid: Vec<Vec<u8>>) -> Grid<Cell> {
 #[test]
 fn grid_neighbours() {
     assert_eq!(
-        Grid::<i32>::new(3, 3)
-            .neighbours(2, 2)
-            .into_iter()
-            .collect::<Vec<_>>(),
+        Grid::<i32>::new(3, 3).neighbours(2, 2).collect::<Vec<_>>(),
         vec![(1, 1), (1, 2), (2, 1)]
     );
     assert_eq!(
-        Grid::<i32>::new(1, 1)
-            .neighbours(0, 0)
-            .into_iter()
-            .collect::<Vec<_>>(),
+        Grid::<i32>::new(1, 1).neighbours(0, 0).collect::<Vec<_>>(),
         vec![]
     );
     assert_eq!(
-        Grid::<i32>::new(3, 4)
-            .neighbours(1, 1)
-            .into_iter()
-            .collect::<Vec<_>>(),
+        Grid::<i32>::new(3, 4).neighbours(1, 1).collect::<Vec<_>>(),
         vec![
             (0, 0),
             (0, 1),

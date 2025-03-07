@@ -43,79 +43,79 @@ impl<T: Clone + Ord> NaiveMinQueue<T> {
 fn it_works() {
     let mut queue = MinQueue::new();
     assert_eq!(queue.len(), 0);
-    assert_eq!(queue.is_empty(), true);
+    assert!(queue.is_empty());
     assert_eq!(queue.front(), None);
     assert_eq!(queue.min(), None);
 
     assert_eq!(queue.pop(), None);
     assert_eq!(queue.len(), 0);
-    assert_eq!(queue.is_empty(), true);
+    assert!(queue.is_empty());
     assert_eq!(queue.front(), None);
     assert_eq!(queue.min(), None);
 
     queue.push(2);
     assert_eq!(queue.len(), 1);
-    assert_eq!(queue.is_empty(), false);
+    assert!(!queue.is_empty());
     assert_eq!(queue.front().unwrap(), &2);
     assert_eq!(queue.min().unwrap(), &2);
 
     queue.push(3);
     assert_eq!(queue.len(), 2);
-    assert_eq!(queue.is_empty(), false);
+    assert!(!queue.is_empty());
     assert_eq!(queue.front().unwrap(), &2);
     assert_eq!(queue.min().unwrap(), &2);
 
     queue.push(4);
     assert_eq!(queue.len(), 3);
-    assert_eq!(queue.is_empty(), false);
+    assert!(!queue.is_empty());
     assert_eq!(queue.front().unwrap(), &2);
     assert_eq!(queue.min().unwrap(), &2);
 
     queue.push(1);
     assert_eq!(queue.len(), 4);
-    assert_eq!(queue.is_empty(), false);
+    assert!(!queue.is_empty());
     assert_eq!(queue.front().unwrap(), &2);
     assert_eq!(queue.min().unwrap(), &1);
 
     queue.push(5);
     assert_eq!(queue.len(), 5);
-    assert_eq!(queue.is_empty(), false);
+    assert!(!queue.is_empty());
     assert_eq!(queue.front().unwrap(), &2);
     assert_eq!(queue.min().unwrap(), &1);
 
     assert_eq!(queue.pop(), Some(2));
     assert_eq!(queue.len(), 4);
-    assert_eq!(queue.is_empty(), false);
+    assert!(!queue.is_empty());
     assert_eq!(queue.front().unwrap(), &3);
     assert_eq!(queue.min().unwrap(), &1);
 
     assert_eq!(queue.pop(), Some(3));
     assert_eq!(queue.len(), 3);
-    assert_eq!(queue.is_empty(), false);
+    assert!(!queue.is_empty());
     assert_eq!(queue.front().unwrap(), &4);
     assert_eq!(queue.min().unwrap(), &1);
 
     assert_eq!(queue.pop(), Some(4));
     assert_eq!(queue.len(), 2);
-    assert_eq!(queue.is_empty(), false);
+    assert!(!queue.is_empty());
     assert_eq!(queue.front().unwrap(), &1);
     assert_eq!(queue.min().unwrap(), &1);
 
     assert_eq!(queue.pop(), Some(1));
     assert_eq!(queue.len(), 1);
-    assert_eq!(queue.is_empty(), false);
+    assert!(!queue.is_empty());
     assert_eq!(queue.front().unwrap(), &5);
     assert_eq!(queue.min().unwrap(), &5);
 
     assert_eq!(queue.pop(), Some(5));
     assert_eq!(queue.len(), 0);
-    assert_eq!(queue.is_empty(), true);
+    assert!(queue.is_empty());
     assert_eq!(queue.front(), None);
     assert_eq!(queue.min(), None);
 
     assert_eq!(queue.pop(), None);
     assert_eq!(queue.len(), 0);
-    assert_eq!(queue.is_empty(), true);
+    assert!(queue.is_empty());
     assert_eq!(queue.front(), None);
     assert_eq!(queue.min(), None);
 }
@@ -124,12 +124,12 @@ fn it_works() {
 fn compare_with_naive() {
     let mut queue = MinQueue::new();
     let mut naive = NaiveMinQueue::new();
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     for _ in 0..10000 {
-        if rng.gen_range(0..3) == 0 {
+        if rng.random_range(0..3) == 0 {
             assert_eq!(queue.pop(), naive.pop());
         } else {
-            let value = rng.gen::<u64>();
+            let value = rng.random::<u64>();
             queue.push(value);
             naive.push(value);
         }
@@ -144,9 +144,9 @@ fn compare_with_naive() {
 #[timeout(2000)]
 fn stress() {
     let mut queue = MinQueue::new();
-    let mut rng = rand::thread_rng();
+    let mut rng = rand::rng();
     for _ in 0..300000 {
-        match rng.gen_range(0..4) {
+        match rng.random_range(0..4) {
             0 => {
                 queue.pop();
             }
@@ -154,7 +154,7 @@ fn stress() {
                 queue.min();
             }
             _ => {
-                queue.push(rng.gen::<u64>());
+                queue.push(rng.random::<u64>());
             }
         }
     }
