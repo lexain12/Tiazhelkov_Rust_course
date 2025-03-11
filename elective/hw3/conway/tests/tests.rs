@@ -15,15 +15,12 @@ fn get_grid(grid: Vec<Vec<u8>>) -> Grid<Cell> {
 #[test]
 fn grid_neighbours() {
     assert_eq!(
-        Grid::<i32>::new(3, 3).neighbours(2, 2).collect::<Vec<_>>(),
+        Grid::<i32>::new(3, 3).neighbours(2, 2),
         vec![(1, 1), (1, 2), (2, 1)]
     );
+    assert_eq!(Grid::<i32>::new(1, 1).neighbours(0, 0), vec![]);
     assert_eq!(
-        Grid::<i32>::new(1, 1).neighbours(0, 0).collect::<Vec<_>>(),
-        vec![]
-    );
-    assert_eq!(
-        Grid::<i32>::new(3, 4).neighbours(1, 1).collect::<Vec<_>>(),
+        Grid::<i32>::new(3, 4).neighbours(1, 1),
         vec![
             (0, 0),
             (0, 1),
@@ -48,7 +45,7 @@ fn first_rule() {
     let final_grid = get_grid(vec![vec![0, 0, 0], vec![0, 0, 0], vec![0, 0, 0]]);
     let mut game = GameOfLife::from_grid(grid.clone());
     game.step();
-    assert!(game.get_grid() == &final_grid);
+    assert_eq!(game.get_grid(), &final_grid);
 }
 
 #[test]
@@ -100,7 +97,7 @@ fn fourth_rule() {
     ]);
     let mut game = GameOfLife::from_grid(grid.clone());
     game.step();
-    assert!(game.get_grid() == &final_grid);
+    assert_eq!(game.get_grid(), &final_grid);
 }
 
 #[test]
