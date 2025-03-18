@@ -15,9 +15,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build
-      run: cargo build --verbose --workspace
+      run: cargo check --verbose --manifest-path ./elective/Cargo.toml --workspace
     - name: fmt
-      run: cargo fmt --workspace
+      run: cargo fmt --manifest-path ./elective/Cargo.toml --all
     - name: Run tests
-      run: cargo test --verbose --workspace
+      run: cargo test --manifest-path ./elective/Cargo.toml --verbose --workspace
 
