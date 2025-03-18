@@ -1,9 +1,2 @@
-[package]
-name = "elective"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-
 [workspace]
 members = ["hw0/add", "hw1", "hw3/conway", "hw3/min-queue"]
