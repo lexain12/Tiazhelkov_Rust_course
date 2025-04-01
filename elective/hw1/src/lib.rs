@@ -49,3 +49,34 @@ impl Collaborator {
         &self.mail
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::collaborative_task::CollaborativeTask;
+    use crate::ordinary_task::OrdinaryTask;
+
+    use super::*;
+    type Tasks = Vec<Box<dyn Task>>;
+
+    #[test]
+    fn all_tasks_in_one_vec() {
+        let mut tasks: Tasks = vec![];
+        let name = String::from("Task");
+        let description = String::from("My new beatiful task");
+        let ordinary_task = Box::new(OrdinaryTask::new(name.clone(), description.clone()));
+        tasks.push(ordinary_task);
+
+        let name = String::from("Task");
+        let description = String::from("My new beatiful task");
+        let collaborative_task = Box::new(CollaborativeTask::new(
+            name.clone(),
+            description.clone(),
+            None,
+        ));
+        tasks.push(collaborative_task);
+
+        for task in tasks {
+            assert_eq!(task.name(), "Task");
+        }
+    }
+}
