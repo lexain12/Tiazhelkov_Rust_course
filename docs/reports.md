@@ -7,5 +7,6 @@
 - Front 
 - Работа с бд
 - FFI
+- benchmarking
 
 TBD
