@@ -3,14 +3,18 @@
 use std::cmp::min;
 
 pub fn longest_common_prefix(strs: Vec<&str>) -> String {
+    if strs.is_empty() {
+        return String::new();
+    }
     let mut ans: &[char] = &strs[0].chars().collect::<Vec<char>>();
     for string in &strs[..] {
-        let min_len = min(ans.len(), string.len());
+        let min_len = min(ans.len(), string.chars().count());
         if min_len == 0 {
             return String::new();
         }
 
-        for (index, char) in string.char_indices() {
+        let mut index = 0;
+        for char in string.chars() {
             if char != ans[index] {
                 ans = &ans[0..index];
                 break;
@@ -20,6 +24,7 @@ pub fn longest_common_prefix(strs: Vec<&str>) -> String {
                 ans = &ans[0..=index];
                 break;
             }
+            index += 1;
         }
     }
     String::from_iter(ans)
