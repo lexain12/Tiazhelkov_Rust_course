@@ -3,6 +3,7 @@ use std::{cell::Cell, collections::HashSet, rc::Rc};
 
 ////////////////////////////////////////////////////////////////////////////////
 
+#[derive(Debug)]
 struct Clonable {
     payload: usize,
     cloned_count: Rc<Cell<usize>>,
@@ -33,9 +34,21 @@ impl Clone for Clonable {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+#[derive(Debug)]
 struct TrackedIter<I> {
     inner: I,
     advanced_count: Rc<Cell<usize>>,
+}
+
+impl<I> Clone for TrackedIter<I> 
+where I: Clone,
+{
+    fn clone(&self) -> Self {
+        Self {
+            inner: self.inner.clone(),
+            advanced_count: Rc::new(Cell::new(self.advanced_count.get()))
+        }
+    } 
 }
 
 impl<I> TrackedIter<I> {
@@ -60,6 +73,7 @@ impl<I: Iterator> Iterator for TrackedIter<I> {
 
 ////////////////////////////////////////////////////////////////////////////////
 
+#[derive(Clone, Debug)]
 struct SkipIter<I: Iterator> {
     iter: I,
     advanced_count: usize,
@@ -147,6 +161,7 @@ fn lazy_cycle_empty() {
 
 #[test]
 fn extract_simple() {
+    #[derive(Debug)]
     struct Int(usize);
     let mut iter: Box<dyn ExtendedIterator<Item = Int>> = Box::new((0..100).map(Int));
 

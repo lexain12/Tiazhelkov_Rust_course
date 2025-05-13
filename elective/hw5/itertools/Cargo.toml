@@ -2,3 +2,7 @@
 name = "itertools"
 version = "0.2.0"
 edition = "2021"
+
+
+[dependencies]
+extern_itertools = {package = "itertools", version = "0.14.0"}

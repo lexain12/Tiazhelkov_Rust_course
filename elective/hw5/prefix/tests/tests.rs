@@ -43,6 +43,11 @@ fn it_works4() {
 }
 
 #[test]
+fn it_works5() {
+    assert_eq!(longest_common_prefix(vec!["a", "b"]), "");
+}
+
+#[test]
 #[timeout(1000)]
 fn simple_stress() {
     let s: String = rng()
