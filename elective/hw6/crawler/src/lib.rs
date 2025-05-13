@@ -16,6 +16,7 @@ pub struct Config {
     pub concurrent_requests: Option<usize>, // Probably size of thread pool
 }
 
+#[derive(Debug)]
 pub struct Page {
     pub url: String,
     pub body: String,
@@ -70,7 +71,13 @@ impl Crawler {
                         };
                     };
 
-                    let text = reqwest::get(&next_url).await.unwrap().text().await.unwrap();
+                    let text = match reqwest::get(&next_url).await {
+                        Ok(reqwest) => reqwest.text().await.unwrap_or_default(),
+                        Err(err) => {
+                            eprintln!("Error while reqwesting at {:?}. Site is added as seen and will be never visited", err.url());
+                            String::default()
+                        },
+                    };
 
                     let mut finder = LinkFinder::new();
                     finder.kinds(&[LinkKind::Url]);
