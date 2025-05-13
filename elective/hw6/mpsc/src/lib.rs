@@ -1,6 +1,12 @@
 #![forbid(unsafe_code)]
 
-use std::{cell::RefCell, collections::VecDeque, fmt::Debug, rc::Rc};
+use std::{
+    cell::{Cell, RefCell},
+    collections::VecDeque,
+    fmt::Debug,
+    marker::PhantomData,
+    rc::Rc,
+};
 use thiserror::Error;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -16,37 +22,48 @@ pub struct SendError<T> {
 }
 
 pub struct Sender<T> {
-    // TODO: your code goes here.
+    channel: Rc<RefCell<VecDeque<T>>>,
+    is_closed: Rc<Cell<bool>>,
 }
 
 impl<T> Sender<T> {
     pub fn send(&self, value: T) -> Result<(), SendError<T>> {
-        // TODO: your code goes here.
-        unimplemented!()
+        if self.is_closed() {
+            Err(SendError { value })
+        } else {
+            match self.channel.try_borrow_mut() {
+                Ok(mut channel) => {
+                    channel.push_back(value);
+                    Ok(())
+                }
+                Err(_) => Err(SendError { value }),
+            }
+        }
     }
 
     pub fn is_closed(&self) -> bool {
-        // TODO: your code goes here.
-        unimplemented!()
+        self.is_closed.get()
     }
 
     pub fn same_channel(&self, other: &Self) -> bool {
-        // TODO: your code goes here.
-        unimplemented!()
+        Rc::ptr_eq(&self.channel, &other.channel)
     }
 }
 
 impl<T> Clone for Sender<T> {
     fn clone(&self) -> Self {
-        // TODO: your code goes here.
-        unimplemented!()
+        Sender {
+            channel: Rc::clone(&self.channel),
+            is_closed: Rc::clone(&self.is_closed),
+        }
     }
 }
 
 impl<T> Drop for Sender<T> {
     fn drop(&mut self) {
-        // TODO: your code goes here.
-        unimplemented!()
+        if Rc::strong_count(&self.is_closed) == 2 {
+            self.is_closed.set(true);
+        }
     }
 }
 
@@ -61,31 +78,53 @@ pub enum ReceiveError {
 }
 
 pub struct Receiver<T> {
-    // TODO: your code goes here.
+    channel: Rc<RefCell<VecDeque<T>>>,
+    is_closed: Rc<Cell<bool>>,
+    // To make anti clone because negative trait are still not stable
+    _anti_clone: PhantomData<*mut ()>,
 }
 
 impl<T> Receiver<T> {
+    // SAFETY: we use this only in single threaded version
     pub fn recv(&mut self) -> Result<T, ReceiveError> {
-        // TODO: your code goes here.
-        unimplemented!()
+        if self.is_closed() && self.channel.borrow().len() == 0 {
+            return Err(ReceiveError::Closed);
+        }
+        self.channel
+            .borrow_mut()
+            .pop_front()
+            .ok_or(ReceiveError::Empty)
     }
 
     pub fn close(&mut self) {
-        // TODO: your code goes here.
-        unimplemented!()
+        self.is_closed.set(true);
+    }
+
+    pub fn is_closed(&self) -> bool {
+        self.is_closed.get()
     }
 }
 
 impl<T> Drop for Receiver<T> {
     fn drop(&mut self) {
-        // TODO: your code goes here.
-        unimplemented!()
+        self.close();
     }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 
 pub fn channel<T>() -> (Sender<T>, Receiver<T>) {
-    // TODO: your code goes here.
-    unimplemented!()
+    let channel = Rc::new(RefCell::new(VecDeque::new()));
+    let is_closed = Rc::new(Cell::new(false));
+    (
+        Sender {
+            channel: Rc::clone(&channel),
+            is_closed: Rc::clone(&is_closed),
+        },
+        Receiver {
+            channel: Rc::clone(&channel),
+            is_closed: Rc::clone(&is_closed),
+            _anti_clone: PhantomData,
+        },
+    )
 }

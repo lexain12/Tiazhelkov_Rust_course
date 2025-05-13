@@ -1,2 +1,2 @@
 [workspace]
-members = ["hw0/add", "hw1", "hw3/conway", "hw3/min-queue"]
+members = ["hw0/add", "hw1", "hw3/conway", "hw3/min-queue", "hw6/mpsc", "hw6/crawler"]
