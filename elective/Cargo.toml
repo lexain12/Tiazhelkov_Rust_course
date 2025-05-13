@@ -1,3 +1,3 @@
 [workspace]
 resolver = '2'
-members = ["hw0/add", "hw1", "hw3/conway", "hw3/min-queue", "hw5/itertools", "hw5/prefix"]
+members = ["hw0/add", "hw1", "hw3/conway", "hw3/min-queue", "hw5/itertools", "hw5/prefix", "hw6/mpsc", "hw6/crawler"]
